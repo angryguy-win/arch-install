@@ -115,13 +115,113 @@ echo -ne "
 -------------------------------------------------------------------------
 "
 
-SNAPPER_CONF="$HOME/ArchTitus/configs/etc/snapper/configs/root"
-mkdir -p /etc/snapper/configs/
-cp -rfv ${SNAPPER_CONF} /etc/snapper/configs/
+setup_grub_hooks () {
+    # Boot backup hook.
+    echo "Configuring /boot backup when pacman transactions are made."
+    mkdir /mnt/etc/pacman.d/hooks
+    cat > /mnt/etc/pacman.d/hooks/50-bootbackup.hook <<EOF
+[Trigger]
+Operation = Upgrade
+Operation = Install
+Operation = Remove
+Type = Path
+Target = usr/lib/modules/*/vmlinuz
 
-SNAPPER_CONF_D="$HOME/ArchTitus/configs/etc/conf.d/snapper"
-mkdir -p /etc/conf.d/
-cp -rfv ${SNAPPER_CONF_D} /etc/conf.d/
+[Action]
+Depends = rsync
+Description = Backing up /boot...
+When = PostTransaction
+Exec = /usr/bin/rsync -a --delete /boot /.bootbackup
+EOF
+}
+
+# @description Create and copy the snapper configuration file.
+create_and_copy_snapper_config() {
+    local filename="root"
+    local snapper_dir="/etc/snapper/configs"
+
+    # Create the text file
+    echo "
+    # /etc/snapper/configs/root
+    # subvolume to snapshot
+    SUBVOLUME=\"/\"
+
+    # filesystem type
+    FSTYPE=\"btrfs\"
+
+    # btrfs qgroup for space aware cleanup algorithms
+    QGROUP=\"\"
+
+    # fraction or absolute size of the filesystems space the snapshots may use
+    SPACE_LIMIT=\"0.5\"
+
+    # fraction or absolute size of the filesystems space that should be free
+    FREE_LIMIT=\"0.2\"
+
+    # users and groups allowed to work with config
+    ALLOW_USERS=\"\"
+    ALLOW_GROUPS=\"wheel\"
+
+    # sync users and groups from ALLOW_USERS and ALLOW_GROUPS to .snapshots
+    # directory
+    SYNC_ACL=\"yes\"
+
+    # start comparing pre- and post-snapshot in background after creating
+    # post-snapshot
+    BACKGROUND_COMPARISON=\"yes\"
+
+    # run daily number cleanup
+    NUMBER_CLEANUP=\"yes\"
+
+    # limit for number cleanup
+    NUMBER_MIN_AGE=\"3600\"
+    NUMBER_LIMIT=\"10\"
+    NUMBER_LIMIT_IMPORTANT=\"10\"
+
+    # create hourly snapshots
+    TIMELINE_CREATE=\"yes\"
+
+    # cleanup hourly snapshots after some time
+    TIMELINE_CLEANUP=\"yes\"
+
+    # limits for timeline cleanup
+    TIMELINE_MIN_AGE=\"3600\"
+    TIMELINE_LIMIT_HOURLY=\"5\"
+    TIMELINE_LIMIT_DAILY=\"7\"
+    TIMELINE_LIMIT_WEEKLY=\"0\"
+    TIMELINE_LIMIT_MONTHLY=\"0\"
+    TIMELINE_LIMIT_QUARTERLY=\"0\"
+    TIMELINE_LIMIT_YEARLY=\"0\"
+
+    # cleanup empty pre-post-pairs
+    EMPTY_PRE_POST_CLEANUP=\"yes\"
+
+    # limits for empty pre-post-pair cleanup
+    EMPTY_PRE_POST_MIN_AGE=\"3600\"
+    " > "$filename"
+
+    # Copy to snapper directory
+    mv "$filename" "$snapper_dir"
+}
+# @description Create a snapper configuration and update /etc/conf.d/snapper
+snapper_root_config() {
+    local config_name="root"
+    local content="## Path: System/Snapper
+## Type:        string
+## Default:     \"\"
+# List of snapper configurations.
+SNAPPER_CONFIGS=\"$config_name\""
+
+    # Create the text file
+    echo "$content" > snapper.txt
+
+    # Move to /etc/conf.d/snapper
+    mv snapper.txt /etc/conf.d/snapper
+}
+
+setup_grub_hooks
+create_and_copy_snapper_config
+snapper_root_config
 
 fi
 
