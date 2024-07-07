@@ -114,26 +114,6 @@ echo -ne "
                     Creating Snapper Config
 -------------------------------------------------------------------------
 "
-
-setup_grub_hooks () {
-    # Boot backup hook.
-    echo "Configuring /boot backup when pacman transactions are made."
-    mkdir /mnt/etc/pacman.d/hooks
-    cat > /mnt/etc/pacman.d/hooks/50-bootbackup.hook <<EOF
-[Trigger]
-Operation = Upgrade
-Operation = Install
-Operation = Remove
-Type = Path
-Target = usr/lib/modules/*/vmlinuz
-
-[Action]
-Depends = rsync
-Description = Backing up /boot...
-When = PostTransaction
-Exec = /usr/bin/rsync -a --delete /boot /.bootbackup
-EOF
-}
 # @description Create and copy a configuration file to a specified directory.
 # @param $1 - Source file path of the configuration file.
 # @param $2 - Destination directory where the configuration file should be moved.
@@ -157,9 +137,10 @@ create_and_copy_config() {
 
 # set -e # Exit on any command failure
 
-create_and_copy_config "$HOME/ArchTitus/configs/etc/snapper/configs/root" "/etc/snapper/configs/"
-create_and_copy_config "$HOME/ArchTitus/configs/etc/conf.d/snapper" "/etc/conf.d/"
-create_and_copy_config "$HOME/ArchTitus/configs/snapper/hooks" "/etc/pacman.d/hooks/50-bootbackup.hook"
+create_and_copy_config "$HOME/ArchTitus/configs/snapper/root" "/etc/snapper/configs/"
+create_and_copy_config "$HOME/ArchTitus/configs/snapper/snapper" "/etc/conf.d/"
+create_and_copy_config "$HOME/ArchTitus/configs/snapper/95-bootbackup_post.hook" "/etc/pacman.d/hooks/"
+create_and_copy_config "$HOME/ArchTitus/configs/snapper/95-bootbackup_pre.hook" "/etc/pacman.d/hooks/"
 
 fi
 
