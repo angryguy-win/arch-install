@@ -81,21 +81,32 @@ echo -ne "
                     Enabling Essential Services
 -------------------------------------------------------------------------
 "
-systemctl enable cups.service
-echo "  Cups enabled"
-ntpd -qg
-systemctl enable ntpd.service
-echo "  NTP enabled"
+echo "Enabling Essential Services"
+   services=(
+        cups.service
+        ntpd.service
+        NetworkManager.service
+        bluetooth
+        avahi-daemon.service
+        snapper-timeline.timer 
+        snapper-cleanup.timer 
+        btrfs-scrub@-.timer 
+        btrfs-scrub@home.timer 
+        btrfs-scrub@var-log.timer 
+        btrfs-scrub@\\x2esnapshots.timer 
+        grub-btrfsd.service 
+        systemd-oomd
+    )
+ for service in "${services[@]}"; do
+        systemctl enable "$service" --root=/mnt &>/dev/null
+        echo "  $service enabled"
+ done
+    
 systemctl disable dhcpcd.service
 echo "  DHCP disabled"
 systemctl stop dhcpcd.service
 echo "  DHCP stopped"
-systemctl enable NetworkManager.service
-echo "  NetworkManager enabled"
-systemctl enable bluetooth
-echo "  Bluetooth enabled"
-systemctl enable avahi-daemon.service
-echo "  Avahi enabled"
+
 
 if [[ "${FS}" == "luks" || "${FS}" == "btrfs" ]]; then
 echo -ne "
