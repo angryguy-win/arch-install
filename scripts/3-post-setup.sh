@@ -86,7 +86,7 @@ echo "Enabling Essential Services"
         cups.service
         ntpd.service
         NetworkManager.service
-        bluetooth
+        bluetooth.service
         avahi-daemon.service
         snapper-timeline.timer 
         snapper-cleanup.timer 
@@ -99,6 +99,7 @@ echo "Enabling Essential Services"
     )
  for service in "${services[@]}"; do
         systemctl enable "$service" --root=/mnt &>/dev/null
+        systemctl start "$service" --root=/mnt &>/dev/null
         echo "  $service enabled"
  done
     
@@ -107,7 +108,7 @@ echo "  DHCP disabled"
 systemctl stop dhcpcd.service
 echo "  DHCP stopped"
 
-
+:
 if [[ "${FS}" == "luks" || "${FS}" == "btrfs" ]]; then
 echo -ne "
 -------------------------------------------------------------------------
@@ -137,10 +138,10 @@ create_and_copy_config() {
 
 # set -e # Exit on any command failure
 
-create_and_copy_config "$HOME/ArchTitus/configs/snapper/root" "/etc/snapper/configs/"
-create_and_copy_config "$HOME/ArchTitus/configs/snapper/snapper" "/etc/conf.d/"
-create_and_copy_config "$HOME/ArchTitus/configs/snapper/95-bootbackup_post.hook" "/etc/pacman.d/hooks/"
-create_and_copy_config "$HOME/ArchTitus/configs/snapper/95-bootbackup_pre.hook" "/etc/pacman.d/hooks/"
+create_and_copy_config "$HOME/ArchTitus/configs/snapper/root" "/etc/snapper/configs"
+create_and_copy_config "$HOME/ArchTitus/configs/snapper/snapper" "/etc/conf.d"
+create_and_copy_config "$HOME/ArchTitus/configs/snapper/95-bootbackup_post.hook" "/etc/pacman.d/hooks"
+create_and_copy_config "$HOME/ArchTitus/configs/snapper/95-bootbackup_pre.hook" "/etc/pacman.d/hooks"
 
 fi
 
