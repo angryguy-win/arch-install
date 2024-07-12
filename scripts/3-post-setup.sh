@@ -137,10 +137,10 @@ create_and_copy_config() {
 
 # set -e # Exit on any command failure
 
-create_and_copy_config "$HOME/ArchTitus/configs/snapper/root" "/etc/snapper/configs/"
-create_and_copy_config "$HOME/ArchTitus/configs/snapper/snapper" "/etc/conf.d/"
-create_and_copy_config "$HOME/ArchTitus/configs/snapper/95-bootbackup_post.hook" "/etc/pacman.d/hooks/"
-create_and_copy_config "$HOME/ArchTitus/configs/snapper/95-bootbackup_pre.hook" "/etc/pacman.d/hooks/"
+create_and_copy_config "$HOME/ArchTitus/configs/snapper/root" "/etc/snapper/configs"
+create_and_copy_config "$HOME/ArchTitus/configs/snapper/snapper" "/etc/conf.d"
+create_and_copy_config "$HOME/ArchTitus/configs/snapper/95-bootbackup_post.hook" "/etc/pacman.d/hooks"
+create_and_copy_config "$HOME/ArchTitus/configs/snapper/95-bootbackup_pre.hook" "/etc/pacman.d/hooks"
 
 fi
 
