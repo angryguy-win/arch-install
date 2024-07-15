@@ -46,7 +46,7 @@ echo -ne "
                     Installing Prerequisites
 -------------------------------------------------------------------------
 "
-pacman -S --noconfirm --needed gptfdisk btrfs-progs glibc gptfdisk btrfs-grub snap-pac snapper rsync
+pacman -S --noconfirm --needed gptfdisk btrfs-progs glibc gptfdisk snapper rsync
 echo -ne "
 -------------------------------------------------------------------------
                     Formating Disk
