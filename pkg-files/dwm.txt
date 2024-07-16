@@ -1,9 +1,17 @@
-base-devel
-libx11
-libxft
-libxinerama
-freetype2
-kitty
-thunar
-xorg
---END OF MINIMAL INSTALL--
+## Any line that starts with a # is a comment and will be ignored by the script.
+# The #  can be removed from the beginning of the line to install the package.
+# it will only install the package serounded in single quotes
+# make sure to check the AUR for any packages that are not in the official repositories.
+# before adding them to this file.
+# you can comment out # any package you do not want to install.
+# Category ------------------------------------------------------------
+# Package name          # Descriton of the package
+'base-devel'            # Basic Developement tools 
+'libx11'                # Xorg libraries   
+'libxft'                #
+'libxinerama'           #
+'freetype2'             #
+'kitty'                 # Terminal
+'thunar'                # File browser
+'xorg'                  # desktop session manager
+# --END OF MINIMAL INSTALL--

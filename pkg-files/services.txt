@@ -1,0 +1,13 @@
+    cups.service
+    ntpd.service
+    NetworkManager.service
+    bluetooth.service
+    avahi-daemon.service
+    snapper-timeline.timer 
+    snapper-cleanup.timer 
+    btrfs-scrub@-.timer 
+    btrfs-scrub@home.timer 
+    btrfs-scrub@var-log.timer 
+    btrfs-scrub@\\x2esnapshots.timer 
+    grub-btrfsd.service 
+    systemd-oomd

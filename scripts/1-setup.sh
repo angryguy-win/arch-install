@@ -76,19 +76,52 @@ echo -ne "
                     Installing Base System  
 -------------------------------------------------------------------------
 "
-# sed $INSTALL_TYPE is using install type to check for MINIMAL installation, if it's true, stop
-# stop the script and move on, not installing any more packages below that line
-if [[ ! $DESKTOP_ENV == server ]]; then
-  sed -n '/'$INSTALL_TYPE'/q;p' $HOME/ArchTitus/pkg-files/pacman-pkgs.txt | while read line
-  do
-    if [[ ${line} == '--END OF MINIMAL INSTALL--' ]]; then
-      # If selected installation type is FULL, skip the --END OF THE MINIMAL INSTALLATION-- line
-      continue
+# @description Install packages from a file.
+# @param $1 - The file containing the list of packages to install.
+# @example install_packages "packages.txt" "/path/to/source"
+# @exitcode 1 - File not found.
+# @exitcode 0 - Success.
+install_packages() {
+
+    # Usage: install_packages <file>
+    # install_packages "packages.txt"
+    local source_file_path="$2"
+
+    # Check if the file exists
+    if [ ! -f "$source_file_path/$1" ]; then
+        echo "File not found! $1"
+        exit 1
     fi
-    echo "INSTALLING: ${line}"
-    sudo pacman -S --noconfirm --needed ${line}
-  done
+
+    local file="$source_file_path/$1"
+    local PKGS=()
+
+    echo "INSTALLING SOFTWARE"
+
+    # Read the file and populate the PKGS array
+    while IFS= read -r line; do
+        if [[ ! $line =~ ^\s*# ]]; then
+            # Extract content within single quotes
+            if [[ $line =~ \'([^\']*)\' ]]; then
+                PKGS+=("${BASH_REMATCH[1]}")
+            fi
+        fi
+    done < "$file"
+
+    # Install the packages
+    for PKG in "${PKGS[@]}"; do
+        echo "INSTALLING: ${PKG}"
+        sudo pacman -S "$PKG" --noconfirm --needed
+    done
+}
+
+if [[ $INSTALL_TYPE == FULL ]]; then
+  install_packages "base-pkgs.txt" "$HOME/ArchTitus/pkg-files"
+  else
+  install_packages "base-pkgs-minimal.txt" "$HOME/ArchTitus/pkg-files"
+  install_packages "software-pacman.txt" "$HOME/ArchTitus/pkg-files"
 fi
+
 echo -ne "
 -------------------------------------------------------------------------
                     Installing Microcode

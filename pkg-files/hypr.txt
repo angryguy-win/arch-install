@@ -1,43 +1,52 @@
-hyprland
-polkit-gnome
-ffmpeg
-neovim
-viewnior
-rofi
-pavucontrol
-thunar
-starship
-wl-clipboard
-wf-recorder
-swaybg
-grimblast-git
-ffmpegthumbnailer
-tumbler
-playerctl
-noise-suppression-for-voice
-thunar-archive-plugin
-kitty
-waybar-hyprland
-wlogout
-swaylock-effects
-sddm-git
-pamixer
-nwg-look-bin
-nordic-theme
-papirus-icon-theme
-dunst
-otf-sora
-ttf-nerd-fonts-symbols-common
-otf-firamono-nerd
-inter-font
-ttf-fantasque-nerd
-noto-fonts
-noto-fonts-emoji
-ttf-comfortaa
-ttf-jetbrains-mono-nerd
-ttf-icomoon-feather
-ttf-iosevka-nerd
-adobe-source-code-pro-fonts
-brightnessctl
-hyprpicker-git
---END OF MINIMAL INSTALL--
+## Any line that starts with a # is a comment and will be ignored by the script.
+# The #  can be removed from the beginning of the line to install the package.
+# it will only install the package serounded in single quotes
+# make sure to check the AUR for any packages that are not in the official repositories.
+# before adding them to this file.
+# you can comment out # any package you do not want to install.
+# Category ------------------------------------------------------------
+# Package name          # Descriton of the package
+
+'hyprland'                  # Hyprland Linux desktop distribution.
+'polkit-gnome'              # graphical front-end for Polkit authentication.
+'ffmpeg'                    # cross-platform solution to record, convert, and stream audio and video.
+'neovim'                    # highly extensible text editor based on Vim.
+'viewnior'                  # fast and simple image viewer.
+'rofi'                      # window switcher, application launcher, and dmenu replacement.
+'pavucontrol'               # simple GTK-based volume control tool for PulseAudio.
+'thunar'                    # modern file manager for the Xfce desktop environment.
+'starship'                  # minimal, blazing-fast, and infinitely customizable prompt for any shell.
+'wl-clipboard'              # command-line copy/paste utilities for Wayland.
+'wf-recorder'               # simple screen recorder for wlroots-based compositors.
+'swaybg'                    # wallpaper tool for Wayland compositors.
+'grimblast-git'             # tool to take screenshots in Wayland compositors.
+'ffmpegthumbnailer'         # lightweight video thumbnailer.
+'tumbler'                   # D-Bus service for applications to request thumbnails.
+'playerctl'                 # command-line utility to control media players.
+'noise-suppression-for-voice'  # noise suppression plugin for PulseAudio.
+'thunar-archive-plugin'     # plugin for Thunar file manager to create and extract archives.
+'kitty'                     # modern, hackable, featureful, OpenGL-based terminal emulator.
+'waybar-hyprland'           # highly customizable Wayland bar for Sway and other Wayland compositors.
+'wlogout'                   # logout menu for Wayland compositors.
+'swaylock-effects'          # collection of additional effects for swaylock.
+'sddm-git'                  # modern display manager for X11 and Wayland.
+'pamixer'                   # command-line mixer for PulseAudio.
+'nwg-look-bin'              # GTK-based look and feel customization tool for sway and other WMs.
+'nordic-theme'              # beautiful theme for GTK, GNOME Shell, and more.
+'papirus-icon-theme'        # free and open-source icon theme for Linux.
+'dunst'                     # lightweight and customizable notification daemon.
+'otf-sora'                  # sans-serif font designed for user interfaces.
+'ttf-nerd-fonts-symbols-common'  # collection of over 20 patched fonts for Powerline, Devicons, and more.
+'otf-firamono-nerd'         # monospaced font with programming ligatures.
+'inter-font'                # typeface specially designed for user interfaces.
+'ttf-fantasque-nerd'        # programming font with a great legibility.
+'noto-fonts'                # collection of fonts designed to support all scripts encoded in Unicode.
+'noto-fonts-emoji'          # collection of emoji fonts.
+'ttf-comfortaa'             # stylish, modern, and legible font.
+'ttf-jetbrains-mono-nerd'   # typeface for developers, designed for coding.
+'ttf-icomoon-feather'       # collection of Feather icons as a webfont.
+'ttf-iosevka-nerd'          # slender monospace sans-serif and slab-serif typeface.
+'adobe-source-code-pro-fonts'  set of monospaced OpenType fonts designed for coding.
+'brightnessctl'             # command-line utility to control display brightness.
+'hyprpicker-git'             # color picker tool for Wayland compositors.
+# --END OF MINIMAL INSTALL--

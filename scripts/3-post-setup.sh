@@ -27,6 +27,13 @@ fi
 
 echo -ne "
 -------------------------------------------------------------------------
+               Installing the last of the require packages
+-------------------------------------------------------------------------
+"
+pacman -S --noconfirm --needed btrfs-grub snap-pac
+
+echo -ne "
+-------------------------------------------------------------------------
                Creating (and Theming) Grub Boot Menu
 -------------------------------------------------------------------------
 "
@@ -81,34 +88,46 @@ echo -ne "
                     Enabling Essential Services
 -------------------------------------------------------------------------
 "
-echo "Enabling Essential Services"
-   services=(
-        cups.service
-        ntpd.service
-        NetworkManager.service
-        bluetooth.service
-        avahi-daemon.service
-        snapper-timeline.timer 
-        snapper-cleanup.timer 
-        btrfs-scrub@-.timer 
-        btrfs-scrub@home.timer 
-        btrfs-scrub@var-log.timer 
-        btrfs-scrub@\\x2esnapshots.timer 
-        grub-btrfsd.service 
-        systemd-oomd
-    )
- for service in "${services[@]}"; do
-        systemctl enable "$service" --root=/mnt &>/dev/null
-        systemctl start "$service" --root=/mnt &>/dev/null
-        echo "  $service enabled"
- done
-    
-systemctl disable dhcpcd.service
-echo "  DHCP disabled"
-systemctl stop dhcpcd.service
-echo "  DHCP stopped"
+# @description Enable and start the specified services.
+# @example start_and_enable_services
+start_and_enable_services() {
+  local FILE_LIST=(
+    cups.service
+    ntpd.service
+    NetworkManager.service
+    bluetooth.service
+    avahi-daemon.service
+    snapper-timeline.timer 
+    snapper-cleanup.timer 
+    btrfs-scrub@-.timer 
+    btrfs-scrub@home.timer 
+    btrfs-scrub@var-log.timer 
+    btrfs-scrub@\\x2esnapshots.timer 
+    grub-btrfsd.service 
+    systemd-oomd
+  )
 
-:
+  # Check if the file exists
+  if [ ! -f "$FILE_LIST" ]; then
+    echo "File $FILE_LIST does not exist."
+    return 1
+  fi
+
+  # Read the file line by line and start/enable the services
+  while IFS= read -r SERVICE; do
+    # Start the service
+    sudo systemctl start "$SERVICE"
+
+    # Enable the service to start on boot
+    sudo systemctl enable "$SERVICE"
+
+    echo "Service $SERVICE has been started and enabled."
+  done < "$FILE_LIST"
+}
+echo "Enabling Essential Services"
+start_and_enable_services
+
+
 if [[ "${FS}" == "luks" || "${FS}" == "btrfs" ]]; then
 echo -ne "
 -------------------------------------------------------------------------
